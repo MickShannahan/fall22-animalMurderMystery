@@ -4,12 +4,14 @@ const animals = [
     name: 'Leo',
     picture: '🦁',
     isAlive: true,
+    weapon: 'teeth',
     diet: ['meat', 'frosted flakes'],
     age: 10
   },
   {
     name: 'Sally',
     picture: '🦥',
+    weapon: 'claws',
     isAlive: true,
     diet: ['berries'],
     age: 10
@@ -17,6 +19,7 @@ const animals = [
   {
     name: 'Ally',
     picture: '🐊',
+    weapon: 'teeth',
     isAlive: true,
     diet: ['floridians', 'meat'],
     age: 10
@@ -24,6 +27,7 @@ const animals = [
   {
     name: 'Tyler',
     picture: '🐯',
+    weapon: 'claws',
     isAlive: true,
     diet: ['frosted flakes', 'meat'],
     age: 10
@@ -31,6 +35,7 @@ const animals = [
   {
     name: 'Larry',
     picture: '🐲',
+    weapon: 'magic',
     isAlive: true,
     diet: ['sheep', 'wizards', 'monkey'],
     age: 1000
@@ -38,6 +43,7 @@ const animals = [
   {
     name: 'Morris',
     picture: '🐒',
+    weapon: 'kung fu',
     isAlive: true,
     diet: ['berries', 'bananas', 'monkeys'],
     age: 30
@@ -45,6 +51,7 @@ const animals = [
   {
     name: 'Harry',
     picture: '🧙‍♂️',
+    weapon: 'magic',
     isAlive: true,
     diet: ['berries', 'noodles', 'butter beer'],
     age: 48
@@ -52,6 +59,7 @@ const animals = [
   {
     name: 'Olivia',
     picture: '🦦',
+    weapon: 'magic',
     isAlive: true,
     diet: ['shrimp', 'fish', 'duck'],
     age: 8
@@ -59,13 +67,15 @@ const animals = [
   {
     name: 'Master Po',
     picture: '🐼',
+    weapon: 'kung fu',
     isAlive: true,
-    diet: ['rice', 'noodles', 'bamboo', 'dumplings', 'duck'],
+    diet: ['rice', 'noodles', 'bamboo', 'dumplings'],
     age: 192
   },
   {
     name: 'Debrah',
-    picture: '🦓',
+    picture: '🦓🪄',
+    weapon: 'magic',
     isAlive: true,
     diet: ['grain', 'garbage'],
     age: 19
@@ -73,6 +83,7 @@ const animals = [
   {
     name: 'Sheesh',
     picture: '🐑',
+    weapon: 'horns',
     isAlive: true,
     diet: ['garbage'],
     age: 16
@@ -81,12 +92,14 @@ const animals = [
     name: 'Turbo',
     picture: '🦃',
     isAlive: true,
+    weapon: 'claws',
     diet: ['grain', 'garbage'],
     age: 22
   },
   {
     name: 'Will',
     picture: '🐳',
+    weapon: 'sheer weight',
     isAlive: true,
     diet: ['shrimp', 'krill', 'nemo'],
     age: 100
@@ -129,7 +142,7 @@ function accuseOfMurder(suspect) {
 
   // don't draw before you do your dirty work
   drawAnimals()
-
+  getClue()
 }
 
 function drawAnimals() {
@@ -154,6 +167,29 @@ function drawAnimals() {
   animalButtons.innerHTML = template
 }
 
+function drawClues(clue){
+  document.getElementById('clues').innerHTML += `<p >${clue}</p>`
+}
+
+function getClue(){
+  let guilty = animals.find(animal => animal.name == murderer)
+  let properties = ['diet', 'age', 'name', 'weapon']
+  let clueProp = properties[Math.floor(Math.random()*properties.length)]
+  let clue = ''
+  switch(clueProp){
+    case 'age' : clue = `this animal is ${guilty.age} years old`
+    break;
+    case 'name' : clue = `this animal's name starts with ${guilty.name[0]}`
+    break;
+    case 'diet': clue = `this animal likes to eat ${guilty.diet[Math.floor(Math.random()*guilty.diet.length)]}`
+    break;
+    case 'weapon': clue = `this animal likes to  kill. Their murder weapon of choice? oh glad you asked, it's their ${guilty.weapon}`
+    break;
+  }
+  console.log('your clue - ', clue);
+  drawClues(clue)
+}
+
 
 function resetGame() {
   animals.forEach(animal => {
@@ -162,8 +198,12 @@ function resetGame() {
 
   drawAnimals()
   getRandomMurderer()
+  // NOTE reset clues
+  document.getElementById('clues').innerHTML = '' 
+  getClue()
 }
 
 
 drawAnimals()
 getRandomMurderer()
+getClue()
